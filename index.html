@@ -41,20 +41,29 @@
     <tbody></tbody>
   </table>
 
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
   <script>
     const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT77F02Hgnghe4nkSZ7t465b7Qos7Eb_V1vBPqrG0aWCOQbHe095XaI8wGlOVeltMN3AHxddZPukenV/pub?output=csv";
 
     fetch(sheetURL)
       .then(response => response.text())
-      .then(data => {
-        const rows = data.trim().split('\n').slice(1); // skip header
-        const tableData = rows.map(row => {
-          const cells = row.split(',');
-          return `<tr>${cells.map(cell => `<td>${cell}</td>`).join('')}</tr>`;
-        }).join('');
-        document.querySelector("#responses tbody").innerHTML = tableData;
+      .then(csv => {
+        const parsed = Papa.parse(csv, { header: true });
+        const data = parsed.data;
+
+        const tbody = document.querySelector("#responses tbody");
+        tbody.innerHTML = '';
+
+        data.forEach(row => {
+          if (Object.values(row).every(cell => cell === "")) return; // skip empty rows
+          const htmlRow = `<tr>${Object.values(row).map(cell => `<td>${cell || ''}</td>`).join('')}</tr>`;
+          tbody.innerHTML += htmlRow;
+        });
+
         new DataTable('#responses');
       });
   </script>
