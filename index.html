@@ -2,24 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AREUEA Survey Responses</title>
+  <title>AREUEA Dataset Directory</title>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 </head>
 <body>
 
-  <h2>AREUEA Survey Responses</h2>
-  <p>This is a searchable and sortable table of live survey responses submitted through the AREUEA data initiative.</p>
+  <h2>AREUEA Dataset Submissions</h2>
+  <p>This searchable table displays information on datasets submitted by the AREUEA community.</p>
 
   <table id="responses" class="display" style="width:100%">
     <thead>
       <tr>
         <th>Timestamp</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Affiliation</th>
-        <th>Current Role</th>
-        <th>Field of Work</th>
-        <th>Data/Tools Suggestion</th>
+        <th>Dataset Name</th>
+        <th>Data Description</th>
+        <th>Data Provider</th>
+        <th>Website</th>
+        <th>Access Type</th>
+        <th>Contact Name</th>
+        <th>Contact Email</th>
+        <th>Category</th>
+        <th>Sub-Category</th>
+        <th>Keywords</th>
+        <th>Unit of Observation</th>
+        <th>Underlying Data Source</th>
+        <th>Geography</th>
+        <th>Frequency</th>
+        <th>Update Frequency</th>
+        <th>Dates of Coverage</th>
+        <th>Key Variables</th>
+        <th>Unreliable Variables</th>
+        <th>Strengths</th>
+        <th>Limitations</th>
+        <th>Alternative Datasets</th>
+        <th>References</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -36,15 +52,7 @@
         const rows = data.trim().split('\n').slice(1); // skip header
         const tableData = rows.map(row => {
           const cells = row.split(',');
-          return `<tr>
-            <td>${cells[0]}</td>
-            <td>${cells[1]}</td>
-            <td>${cells[2]}</td>
-            <td>${cells[3]}</td>
-            <td>${cells[4]}</td>
-            <td>${cells[5]}</td>
-            <td>${cells[6]}</td>
-          </tr>`;
+          return `<tr>${cells.map(cell => `<td>${cell}</td>`).join('')}</tr>`;
         }).join('');
         document.querySelector("#responses tbody").innerHTML = tableData;
         new DataTable('#responses');
